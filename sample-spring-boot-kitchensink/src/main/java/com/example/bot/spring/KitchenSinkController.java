@@ -213,8 +213,8 @@ public class KitchenSinkController {
 
         log.info("Got text message from {}: {}", replyToken, text);
         
-        String APIresponse=DialogueFlow.api_get_intent(text);
-        this.replyText(replyToken, APIresponse);
+//        String APIresponse=DialogueFlow.api_get_intent(text);
+//        this.replyText(replyToken, APIresponse);
         
         switch (text) {
             case "profile": {
