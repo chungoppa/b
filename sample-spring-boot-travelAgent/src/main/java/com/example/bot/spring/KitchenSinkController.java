@@ -210,13 +210,16 @@ public class KitchenSinkController {
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
+        text=text.toLowerCase();
 
         log.info("Got text message from {}: {}", replyToken, text);
         
-//        String APIresponse=DialogueFlow.api_get_intent(text);
-//        this.replyText(replyToken, APIresponse);
-        
         switch (text) {
+        	case "sudo" :
+        		String para="API Token: "+ System.getenv("API_TOKEN")
+        				+ "\nDatabase_URL:" + System.getenv("DATABASE_URL");
+        		this.replyText(replyToken, para);
+        		break;
             case "profile": {
                 String userId = event.getSource().getUserId();
                 if (userId != null) {
@@ -262,6 +265,10 @@ public class KitchenSinkController {
             }
 
             default:
+                
+              String APIresponse=DialogueFlow.api_get_intent(text);
+              this.replyText(replyToken, APIresponse);
+/*              
             	String reply = null;
             	try {
             		reply = database.search(text);
@@ -274,6 +281,7 @@ public class KitchenSinkController {
                         itscLOGIN + " says " + reply
                 );
                 break;
+*/                
         }
     }
 

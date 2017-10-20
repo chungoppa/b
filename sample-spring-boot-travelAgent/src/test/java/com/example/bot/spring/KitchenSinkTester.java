@@ -44,10 +44,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.example.bot.spring.DatabaseEngine;
 
-
-@RunWith(SpringRunner.class)
 //LAB2 - code static
 /*
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
 public class KitchenSinkTester {
 	@Autowired
@@ -92,12 +91,43 @@ public class KitchenSinkTester {
 */
 
 //LAB3 - code -SQL
-@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class })
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class, DialogueFlow.class})
 public class KitchenSinkTester {
 	@Autowired
 	private SQLDatabaseEngine databaseEngine;
 	
 	@Test
+	public void testAPI1() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = "Greetings";
+			result = DialogueFlow.api_get_intent("hi");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("Greetings");
+	}
+	
+	@Test
+	public void testAPI2() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = "Greetings";
+			result = DialogueFlow.api_get_intent("fuck");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("slang");
+	}
+	
+	
+	
+/*	@Test
 	public void testSQLFound1() throws Exception {
 		boolean thrown = false;
 		String result = null;
@@ -174,8 +204,9 @@ public class KitchenSinkTester {
 		assertThat(!thrown).isEqualTo(true);
 		assertThat(result).isEqualTo("Response");
 	}
+*/
 	
-	@Test
+/*	@Test
 	public void testSQLNotFound() throws Exception {
 		boolean thrown = false;
 		try {
@@ -185,5 +216,5 @@ public class KitchenSinkTester {
 		}
 		assertThat(thrown).isEqualTo(true);
 	}
-	
+*/	
 }
