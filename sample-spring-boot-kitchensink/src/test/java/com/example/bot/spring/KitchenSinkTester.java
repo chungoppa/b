@@ -108,7 +108,7 @@ public class KitchenSinkTester {
 			thrown = true;
 		}
 		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("Greetings");
+		assertThat(result).isEqualTo("smalltalk.greetings");
 	}
 	
 	@Test
@@ -122,7 +122,7 @@ public class KitchenSinkTester {
 			thrown = true;
 		}
 		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("slang");
+		assertThat(result).isEqualTo("test.slang");
 	}
 	
 	

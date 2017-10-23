@@ -17,9 +17,10 @@ public class DialogueFlow {
 	/**
 	 * Private access code
 	 */
-	private static String access_token=System.getenv("API_TOKEN");
-	private static AIConfiguration configuration = new AIConfiguration(access_token);
+	private static String token="4380fc3bfc8a441a9e38adea08a0369f";
+	private static AIConfiguration configuration = new AIConfiguration(token);
 	private static AIDataService dataService = new AIDataService(configuration);
+	public static String getToken() {return token;}
 	
  /**
   * @param args List of parameters:<br>
@@ -33,8 +34,7 @@ public class DialogueFlow {
          AIResponse response = dataService.request(request);
          Result result=response.getResult();
          
-         //if (response.getStatus().getCode() == 200) {
-         if(! response.isError()) {
+         if (response.getStatus().getCode() == 200) { 
         	 res= result.getMetadata().getIntentName();
          } else {
         	 res= "fallback";

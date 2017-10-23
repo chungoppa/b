@@ -215,8 +215,10 @@ public class KitchenSinkController {
         log.info("Got text message from {}: {}", replyToken, text);
         
         switch (text) {
+        	case "sudo login":
+        		break;
         	case "sudo" :
-        		String para="API Token: "+ System.getenv("API_TOKEN")
+        		String para="API Token: "+ DialogueFlow.getToken()
         				+ "\nDatabase_URL:" + System.getenv("DATABASE_URL");
         		this.replyText(replyToken, para);
         		break;
