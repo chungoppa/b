@@ -216,6 +216,8 @@ public class KitchenSinkController {
         
         switch (text) {
         	case "sudo login":
+        		TestLoop testLoop=new TestLoop();
+        		testLoop.test(event);
         		break;
         	case "sudo" :
         		String para="API Token: "+ DialogueFlow.getToken()
