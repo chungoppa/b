@@ -32,7 +32,7 @@ public class FeatureSudo extends Feature {
 				result="User ID: "+user.getUserID()	+ "\nAPI Token: " + DialogueFlow.getToken()	+ "\nDatabase_URL:" + System.getenv("DATABASE_URL");
 				break;
 			case "logout":
-				user.setContext("0");
+				user.setContext("none");
 				result="logouted";
 			break;
 			default:

@@ -89,6 +89,7 @@ public class KitchenSinkController {
 
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
+	
 /* Event Mapping */
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -229,17 +230,16 @@ public class KitchenSinkController {
 	 * 
 	 * 
 	 */
-	private String texttextHandler(String replyToken, String text,User user) { 
+	private String texttextHandler(String text,User user) { 
 		Feature feature=null;
 /* Analysis the message Using DiagloueFlow */       
         String AIresponse=DialogueFlow.api_get_intent(text);
 
 /*test responsing*/        
         if(text.equals("test")) {
-        	this.replyText(replyToken,"ID=\n"+user.getUserID()+"\nText=\n"+text+"\nContext=\n"+user.getContext());
+        	return "ID=\n"+user.getUserID()+"\nText=\n"+text+"\nContext=\n"+user.getContext();
         }
-/*Analysise pre-context*/
-        
+/*Analysise pre-context*/    
         String context=user.getContext();
         String contextFromFeature="none";
         String contextInFeature="none";
@@ -253,7 +253,7 @@ public class KitchenSinkController {
         		+ "DEBUG:feature" + "\n"
         		+ contextFromFeature + "\n"
         		+ "DEBUG:context" + "\n"
-        		+ contextInFeature + "\n";
+        		+ contextInFeature;
         
         if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(debugMessage)));
     	
@@ -264,6 +264,7 @@ public class KitchenSinkController {
         		feature=new FeatureSudo(user,contextInFeature);
         	}
         }else {
+        	
 /*selecting features from the text context*/
 	        switch(AIresponse) {
 	    	case "sudo":
@@ -275,6 +276,14 @@ public class KitchenSinkController {
         }    
 	    return feature.call(text);
 
+	}
+	/**
+	 * public interface for testing only
+	 * @param inputText
+	 * @param user
+	 */
+	public String testtexttextHandler(String inputText,User user) {
+		return texttextHandler(inputText, user);
 	}
 
 	/**
@@ -304,7 +313,7 @@ public class KitchenSinkController {
         	allUser.put(userID,user);
         }
         
-        String replyStatement=texttextHandler(replyToken, text,user);
+        String replyStatement=texttextHandler(text,user);
         replyText(replyToken,replyStatement);
 
 ///* action call to deal with the string get*/        

@@ -50,7 +50,8 @@ import com.example.bot.spring.KitchenSinkController;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { KitchenSinkTester.class, DialogueFlow.class})
 public class KitchenSinkTester {
-
+//	@Autowired
+//	private KitchenSinkController ksc;
 	
 	@Test
 	public void testFeatures() throws Exception {
@@ -60,6 +61,15 @@ public class KitchenSinkTester {
 		Feature feature=new FeatureDefaultHandler(user);
 		result=feature.call("whatever");
 		assertThat(result).isEqualTo("<default message>");
+	}
+	
+	@Test
+	public void testText() throws Exception {
+		String inputText="Sudo";
+		User user=new User("Koo Tin Lok");
+		String result="nu";
+//		result=ksc.testtexttextHandler(inputText, user);
+//		assertThat(result).isEqualTo("userID: ");
 	}
 	
 	@Test
