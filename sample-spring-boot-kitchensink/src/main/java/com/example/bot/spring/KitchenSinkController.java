@@ -213,7 +213,7 @@ public class KitchenSinkController {
 
 /*test responsing*/        
         if(text.equals("test")) {
-        	this.replyText(replyToken,user.getUserID()+"\n"+text+"\n"+user.getContext());
+        	this.replyText(replyToken,"ID=\n"+user.getUserID()+"\nText=\n"+text+"\nContext=\n"+user.getContext());
         }        
 /*in case of pre-context*/
         
@@ -240,12 +240,7 @@ public class KitchenSinkController {
 	    return feature.call(text);
 
 	}
-/**
- * testing interface for texttetHandler
- */
-	public String testtexttextHandler(String text,User user) {
-		return texttextHandler(null,text,user);
-	}
+
 /**
  * Directly call replyText() to reply text. anything after replyText() execute will not be run as   
  * the thread will terminate
@@ -414,6 +409,12 @@ public class KitchenSinkController {
 	public static HashMap<String,User> allUser=new HashMap<String,User>();
 	private DatabaseEngine database;
 	private String itscLOGIN;
+/**
+ * testing interface for texttetHandler
+ */
+	public String testtexttextHandler(String text,User user) {
+		return texttextHandler(null,text,user);
+	}
 	
 
 	//The annontation @Value is from the package lombok.Value
