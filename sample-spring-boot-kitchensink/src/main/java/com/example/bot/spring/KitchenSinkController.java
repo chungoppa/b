@@ -215,13 +215,11 @@ public class KitchenSinkController {
         }
 /* Analysis the message */       
         String APIresponse=DialogueFlow.api_get_intent(text);
-        //for testing
-//        if(text=="sudo login")
-//        	APIresponse="sudo";
+
 /* action call to deal with the string get*/        
         //this.replyText(replyToken, APIresponse);
         
-        switch(text) {
+        switch(APIresponse) {
         	case "sudo":
         		feature= new FeatureSudo();
         		break;

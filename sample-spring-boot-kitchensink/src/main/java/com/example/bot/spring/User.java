@@ -8,6 +8,7 @@ public class User {
 	private String intent;
 	private String userID;
 	private String userName;
+	public HashMap<String,String> param=new HashMap<String,String>();
 	
 	public String getContext() {return this.context;}
 	public String getIntent() {return this. intent;}
