@@ -35,7 +35,8 @@ public class FeatureSudo implements Features {
 				result="logined";
 			}
 			
-		}
+			}else
+				result="rejected";
 		}
 		
 		return result;
