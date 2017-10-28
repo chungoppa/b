@@ -205,9 +205,6 @@ public class KitchenSinkController {
             throws Exception {
         String text = content.getText();
         text=text.toLowerCase();
-        if(text=="test") {
-        	replyText(replyToken," ");
-        }
         Features feature;
         log.info("Got text message from {}: {}", replyToken, text);
 /* Get the Previous user record or make a new user */        
@@ -217,15 +214,12 @@ public class KitchenSinkController {
         	user=new User(userID);
         	allUser.put(userID,user);
         }
+        if(text=="test") {
+        	replyText(replyToken,user.getUserID());
+        }
 //test        
         feature= new FeatureSudo();
-//        replyText(replyToken,feature.call(user,text));
-//
-//        
-//        
-//        replyText(replyToken,result);
-//
-//        replyText(replyToken, "XDXD");
+        replyText(replyToken,feature.call(user,text));
 //        
 ///* Analysis the message */       
 //        String APIresponse=DialogueFlow.api_get_intent(text);
