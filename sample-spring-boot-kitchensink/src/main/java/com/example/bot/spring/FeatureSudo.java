@@ -19,7 +19,17 @@ public class FeatureSudo implements Features {
 	public String call(User user, String text) {
 		switch(user.getContext()) {
 		case "logined" :
-			result="User ID: "+user.getUserID()	+ "\nAPI Token: " + DialogueFlow.getToken()	+ "\nDatabase_URL:" + System.getenv("DATABASE_URL");
+			switch(text) {
+			case "info":
+				result="User ID: "+user.getUserID()	+ "\nAPI Token: " + DialogueFlow.getToken()	+ "\nDatabase_URL:" + System.getenv("DATABASE_URL");
+				break;
+			case "logout":
+				user.setContext("0");
+				result="logouted";
+			break;
+			default:
+				result="logined: command not found";
+			}
 			break;
 		case "requestID":
 			user.param.put("ID",text);
@@ -38,7 +48,7 @@ public class FeatureSudo implements Features {
 				result="userID: ";
 				break;
 			default:
-				result="inside - "+text;
+				result="no context - \n"+text;
 			}
 			break;
 		default:
