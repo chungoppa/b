@@ -197,11 +197,17 @@ public class KitchenSinkController {
 	}
 */	
 
+	private void (String text,String userID) {
+		
+	}
+	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
         text=text.toLowerCase();
-       
+        if(text=="test") {
+        	replyText(replyToken," ");
+        }
         Features feature;
         log.info("Got text message from {}: {}", replyToken, text);
 /* Get the Previous user record or make a new user */        
@@ -221,9 +227,7 @@ public class KitchenSinkController {
         		replyText(replyToken,result);
         	else replyText(replyToken,"null");
         }
-        if(text=="test") {
-        	replyText(replyToken,user.getUserID());
-        }
+
 //        
 ///* Analysis the message */       
 //        String APIresponse=DialogueFlow.api_get_intent(text);
