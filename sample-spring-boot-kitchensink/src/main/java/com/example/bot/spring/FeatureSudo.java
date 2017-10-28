@@ -27,14 +27,12 @@ public class FeatureSudo implements Features {
 		default:
 			if(text=="sudo login") {
 				user.setContext("requestID");
-			while(user.param.get("ID")==null && user.param.get("PW")==null) {
-				
-			}
-			if (true) {
-				user.setContext("logined");
-				result="logined";
-			}
-			
+				while(user.param.get("ID")==null && user.param.get("PW")==null) {
+				}
+				if (true) {
+					user.setContext("logined");
+					result="logined";
+				}
 			}else
 				result="rejected";
 		}

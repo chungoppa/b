@@ -201,6 +201,7 @@ public class KitchenSinkController {
             throws Exception {
         String text = content.getText();
         text=text.toLowerCase();
+       
         Features feature;
         log.info("Got text message from {}: {}", replyToken, text);
 /* Get the Previous user record or make a new user */        
@@ -212,6 +213,9 @@ public class KitchenSinkController {
         {
         	user=new User(userID);
         	User.allUser.put(userID,user);
+        }
+        if (text=="context") {
+        	replyText(replyToken,user.getContext());
         }
 /* Analysis the message */       
         String APIresponse=DialogueFlow.api_get_intent(text);
