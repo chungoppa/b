@@ -1,5 +1,6 @@
 package com.example.bot.spring;
 import java.util.HashMap;
+import java.lang.String;
 
 public class User {
 	public static UserCollection allUser=new UserCollection();
@@ -16,9 +17,9 @@ public class User {
 	public void setContext(String context) {this.context=context;}
 	public void setIntent(String intent) {this.intent=intent;}
 	
-	public User(String userID,String userName){
+	public User(String userID){
 		this.userID=userID;
-		this.userName=userName;
+
 	}
 }
 

@@ -210,18 +210,18 @@ public class KitchenSinkController {
         	
         }else
         {
-        	user=new User(userID,null);
+        	user=new User(userID);
         	User.allUser.put(userID,user);
         }
 /* Analysis the message */       
         String APIresponse=DialogueFlow.api_get_intent(text);
         //for testing
-        if(text=="sudo login")
-        	APIresponse="sudo";
+//        if(text=="sudo login")
+//        	APIresponse="sudo";
 /* action call to deal with the string get*/        
         //this.replyText(replyToken, APIresponse);
         
-        switch(APIresponse) {
+        switch(text) {
         	case "sudo":
         		feature= new FeatureSudo();
         		break;

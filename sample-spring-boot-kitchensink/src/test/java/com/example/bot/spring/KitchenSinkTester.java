@@ -43,13 +43,25 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import com.example.bot.spring.DatabaseEngine;
+import com.example.bot.spring.User;
 
 //Project code
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { KitchenSinkTester.class, DialogueFlow.class})
 public class KitchenSinkTester {
-	@Autowired
+
 	
+	@Test
+	public void testFeatures() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		Features feature=new FeatureFallback();
+		User user=new User("123");
+		result=feature.call(user," ");
+		assertThat(result).isEqualTo("Fallback");
+	}
+	
+
 	@Test
 	public void testAPI1() throws Exception {
 		boolean thrown = false;
@@ -63,7 +75,8 @@ public class KitchenSinkTester {
 		assertThat(!thrown).isEqualTo(true);
 		assertThat(result).isEqualTo("smalltalk.greetings");
 	}
-	
+
+/*	
 	@Test
 	public void testAPI2() throws Exception {
 		boolean thrown = false;
@@ -77,6 +90,7 @@ public class KitchenSinkTester {
 		assertThat(!thrown).isEqualTo(true);
 		assertThat(result).isEqualTo("test.slang");
 	}
+*/	
 }
 	
 	
