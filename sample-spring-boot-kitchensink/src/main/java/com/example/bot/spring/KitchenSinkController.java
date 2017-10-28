@@ -76,7 +76,7 @@ import java.util.HashMap;
 @Slf4j
 @LineMessageHandler
 public class KitchenSinkController {
-	
+	public static final boolean DEBUG=true;
 
 
 	@Autowired
@@ -219,16 +219,16 @@ public class KitchenSinkController {
         
         if(!user.getContext().equals("0")) {
         	String context=user.getContext();
-        	String contextFromFeature = context.substring(0, context.indexOf("_")-1);
-        	String contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length()-1);
-    		lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:feature\n"+ contextFromFeature+"\ncontext\n"+contextInFeature)));
+        	String contextFromFeature = context.substring(0, context.indexOf("_"));
+        	String contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length());
+    		if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:feature\n"+ contextFromFeature+"\nDEBUG:context\n"+contextInFeature)));
         	switch(contextFromFeature) {
         	case "sudo":
         		feature=new FeatureSudo(user,contextInFeature);
         	}
         }else {
 /*selecting features from the text context*/
-        	lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:APIresponse\n"+ APIresponse)));
+        	if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:APIresponse\n"+ APIresponse)));
 	        switch(APIresponse) {
 	    	case "sudo":
 	    		feature= new FeatureSudo(user);
