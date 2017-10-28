@@ -20,14 +20,6 @@ public class User {
 	
 	public User(String userID){
 		this.userID=userID;
-
+		this.context="0";
 	}
 }
-//
-//@SuppressWarnings("serial")
-//class UserCollection extends HashMap<String,User>{
-//	public static void test(){
-//		
-//	}
-//	
-//}

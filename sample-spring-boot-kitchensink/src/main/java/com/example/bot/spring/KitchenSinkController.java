@@ -207,9 +207,7 @@ public class KitchenSinkController {
  */
 	private void texttextHandler(String replyToken, String text,User user) { 
 		Features feature=null;
-		if(text=="test") {
-        	this.replyText(replyToken,user.getUserID());
-        }
+		
 /* Analysis the message */       
         String APIresponse=DialogueFlow.api_get_intent(text);
 
@@ -230,10 +228,10 @@ public class KitchenSinkController {
 /*selecting features from the text context*/
 	        switch(APIresponse) {
 	    	case "sudo":
-	    		feature= new FeatureSudo(user,APIresponse);
+	    		feature= new FeatureSudo(user,text);
 	    		break;
 	    	default:
-	    		feature = new FeatureFallback(user,APIresponse);
+	    		feature = new FeatureFallback(user,text);
 	        }
         }    
 	    this.replyText(replyToken,feature.call(text));

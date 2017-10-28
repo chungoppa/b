@@ -68,12 +68,12 @@ public class KitchenSinkTester {
 		String result = null;
 		try {
 			result = "Greetings";
-			result = DialogueFlow.api_get_intent("hi");
+			result = DialogueFlow.api_get_intent("sudo login");
 		} catch (Exception e) {
 			thrown = true;
 		}
 		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("smalltalk.greetings");
+		assertThat(result).isEqualTo("sudo");
 	}
 
 /*	

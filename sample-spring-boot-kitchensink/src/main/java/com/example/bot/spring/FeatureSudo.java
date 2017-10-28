@@ -21,6 +21,16 @@ public class FeatureSudo extends Features {
 	@Override
 	public String call(String text) {
 		switch(context) {
+		case "0":
+			switch(text) {
+			case "sudo login":
+				user.setContext("requestID");
+				result="userID: ";
+				break;
+			default:
+				result="no context - \n"+text;
+			}
+			break;
 		case "logined" :
 			switch(text) {
 			case "info":
@@ -43,16 +53,6 @@ public class FeatureSudo extends Features {
 			user.param.put("PW",text);
 			user.setContext("requestDone");
 			login(user);
-			break;
-		case "0":
-			switch(text) {
-			case "sudo login":
-				user.setContext("requestID");
-				result="userID: ";
-				break;
-			default:
-				result="no context - \n"+text;
-			}
 			break;
 		default:
 			result="rejected";
