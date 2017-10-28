@@ -4,8 +4,8 @@ import java.lang.String;
 
 public class User {
 //	public static UserCollection allUser=new UserCollection();
-	private String context="0";
-	private String intent="0";
+	private String context="none";
+	private String intent="none";
 	private String userID;
 	private String userName="0";
 	public HashMap<String,String> param=new HashMap<String,String>();
@@ -20,6 +20,6 @@ public class User {
 	
 	public User(String userID){
 		this.userID=userID;
-		this.context="0";
+		this.context="none";
 	}
 }
