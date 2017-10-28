@@ -5,9 +5,11 @@ import java.lang.String;
  * 
  *  
 */
-public class FeatureSudo implements Features {
+public class FeatureSudo extends Features {
 	private String result="<<default fallback here>>";
-
+	private String context;
+	private User user;
+	
 	private void login(User user) {
 		String ID=user.param.get("ID");
 		String PW=user.param.get("PW");
@@ -16,8 +18,9 @@ public class FeatureSudo implements Features {
 
 	}
 	
-	public String call(User user, String text) {
-		switch(user.getContext()) {
+	@Override
+	public String call(String text) {
+		switch(context) {
 		case "logined" :
 			switch(text) {
 			case "info":
@@ -58,7 +61,11 @@ public class FeatureSudo implements Features {
 		return result;
 	}
 	
-	public FeatureSudo() {
+	public FeatureSudo(User user, String context) {
+		super(user,context);
 		
+	}
+	public FeatureSudo(User user) {
+		super(user);
 	}
 }

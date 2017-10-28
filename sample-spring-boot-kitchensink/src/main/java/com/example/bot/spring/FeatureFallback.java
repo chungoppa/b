@@ -6,14 +6,18 @@ import java.lang.String;
  *  
 */
 
-public class FeatureFallback implements Features {
-	private String result=null;
-	public String call(User user, String text) {
+public class FeatureFallback extends Features {
+	@Override
+	public String call(String text) {
 		result="Fallback";
 		return "Fallback";
 	}
-	
-	public FeatureFallback() {
-		
+	public FeatureFallback(User user, String context) {
+		super(user,context);
 	}
+	
+	public FeatureFallback(User user) {
+		super(user);
+	}
+	
 }

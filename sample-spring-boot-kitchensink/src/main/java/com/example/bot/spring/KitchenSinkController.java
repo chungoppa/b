@@ -196,27 +196,69 @@ public class KitchenSinkController {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
 */	
-
-	private void texttextHandler(String replyToken, String text,User user) {        
-        Features feature=null;
+/**
+ * Handler of text, but all the structure and changed to String for easier handling
+ * 
+ * @param replyToken	the token to reply
+ * @param text	the text user inputted
+ * @param user 	the info of a specif user.
+ * 
+ * 
+ */
+	private void texttextHandler(String replyToken, String text,User user) { 
+		Features feature=null;
 		if(text=="test") {
         	this.replyText(replyToken,user.getUserID());
-        }        
-        switch(text) {
-        case "0":
-        	break;
-        default:
-        	feature= new FeatureSudo();
         }
-        this.replyText(replyToken,feature.call(user,text));
+/* Analysis the message */       
+        String APIresponse=DialogueFlow.api_get_intent(text);
+
+/*test responsing*/        
+        if(text.equals("test")) {
+        	this.replyText(replyToken,user.getUserID()+"\n"+text);
+        }        
+/*in case of pre-context*/
+        if(!user.getContext().equals("0")) {
+        	String context=user.getContext();
+        	String contextFromFeature = context.substring(0, context.indexOf("_")-1);
+        	String contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length()-1);
+        	switch(contextFromFeature) {
+        	case "sudo":
+        		feature=new FeatureSudo(user,contextInFeature);
+        	}
+        }else {
+/*selecting features from the text context*/
+	        switch(APIresponse) {
+	    	case "sudo":
+	    		feature= new FeatureSudo(user,APIresponse);
+	    		break;
+	    	default:
+	    		feature = new FeatureFallback(user,APIresponse);
+	        }
+        }    
+	    this.replyText(replyToken,feature.call(text));
+
 	}
+	
+/**
+ * Directly call replyText() to reply text. anything after replyText() execute will not be run as   
+ * the thread will terminate
+ * 
+ * @param replyToken	toekn from the event
+ * @param event	info of event
+ * @param content	TextMessageContent: line Struct
+ * 
+ * 
+ * 
+ */
 	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
-        String text = content.getText();
+/* Convert TextMessageContent to lowercase text*/
+		String text = content.getText();
         text=text.toLowerCase();
-        Features feature;
         log.info("Got text message from {}: {}", replyToken, text);
+        
 /* Get the Previous user record or make a new user */        
         String userID = event.getSource().getUserId();
         User user=allUser.get(userID);
@@ -224,18 +266,11 @@ public class KitchenSinkController {
         	user=new User(userID);
         	allUser.put(userID,user);
         }
-        if(text.equals("test")) {
-        	this.replyText(replyToken,userID+"\n"+text);
-        }        
-        feature= new FeatureSudo();
-        this.replyText(replyToken,feature.call(user,text));
         
-//        
-///* Analysis the message */       
-//        String APIresponse=DialogueFlow.api_get_intent(text);
-//
+        texttextHandler(replyToken, text,user);
+
 ///* action call to deal with the string get*/        
-//        //this.replyText(replyToken, APIresponse);
+//       
 //        
 //        switch(APIresponse) {
 //        	case "sudo":

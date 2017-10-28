@@ -55,9 +55,9 @@ public class KitchenSinkTester {
 	public void testFeatures() throws Exception {
 		boolean thrown = false;
 		String result = null;
-		Features feature=new FeatureFallback();
 		User user=new User("123");
-		result=feature.call(user," ");
+		Features feature=new FeatureFallback(user);
+		result=feature.call("whatever");
 		assertThat(result).isEqualTo("Fallback");
 	}
 	
