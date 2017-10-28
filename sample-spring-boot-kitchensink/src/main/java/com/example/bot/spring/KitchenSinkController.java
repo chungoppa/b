@@ -27,6 +27,7 @@ import com.google.common.io.ByteStreams;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.action.PostbackAction;
@@ -207,7 +208,6 @@ public class KitchenSinkController {
  */
 	private void texttextHandler(String replyToken, String text,User user) { 
 		Features feature=null;
-		
 /* Analysis the message */       
         String APIresponse=DialogueFlow.api_get_intent(text);
 
@@ -216,16 +216,21 @@ public class KitchenSinkController {
         	this.replyText(replyToken,user.getUserID()+"\n"+text+"\n"+user.getContext());
         }        
 /*in case of pre-context*/
+
+
+		
         if(!user.getContext().equals("0")) {
         	String context=user.getContext();
         	String contextFromFeature = context.substring(0, context.indexOf("_")-1);
         	String contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length()-1);
+    		lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(contextFromFeature+"\n"+contextInFeature)));
         	switch(contextFromFeature) {
         	case "sudo":
         		feature=new FeatureSudo(user,contextInFeature);
         	}
         }else {
 /*selecting features from the text context*/
+        	lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(APIresponse)));
 	        switch(APIresponse) {
 	    	case "sudo":
 	    		feature= new FeatureSudo(user,text);
