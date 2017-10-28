@@ -197,8 +197,18 @@ public class KitchenSinkController {
 	}
 */	
 
-	private void texttextHandler(String replyToken, String text,String userID) {
-		
+	private void texttextHandler(String replyToken, String text,User user) {        
+        Features feature=null;
+		if(text=="test") {
+        	this.replyText(replyToken,user.getUserID());
+        }        
+        switch(text) {
+        case "0":
+        	break;
+        default:
+        	feature= new FeatureSudo();
+        }
+        this.replyText(replyToken,feature.call(user,text));
 	}
 	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
@@ -214,9 +224,9 @@ public class KitchenSinkController {
         	user=new User(userID);
         	allUser.put(userID,user);
         }
-        if(text=="test") {
-        	this.replyText(replyToken,userID);
-        }        
+    //    if(text=="test") {
+        	this.replyText(replyToken,userID+"\n"+text);
+      //  }        
         feature= new FeatureSudo();
         this.replyText(replyToken,feature.call(user,text));
         
