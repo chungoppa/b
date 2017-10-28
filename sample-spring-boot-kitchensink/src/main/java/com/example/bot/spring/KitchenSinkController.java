@@ -214,27 +214,32 @@ public class KitchenSinkController {
         	user=new User(userID);
         	User.allUser.put(userID,user);
         }
+//test        
         if (text=="context") {
         	String result=user.getContext();
         	if(result!=null)
         		replyText(replyToken,result);
         	else replyText(replyToken,"null");
         }
-/* Analysis the message */       
-        String APIresponse=DialogueFlow.api_get_intent(text);
-
-/* action call to deal with the string get*/        
-        //this.replyText(replyToken, APIresponse);
-        
-        switch(APIresponse) {
-        	case "sudo":
-        		feature= new FeatureSudo();
-        		break;
-        	default:
-        		feature = new FeatureFallback();
+        if(text=="test") {
+        	replyText(replyToken,user.getUserID());
         }
-        
-        replyText(replyToken,feature.call(user,text));
+//        
+///* Analysis the message */       
+//        String APIresponse=DialogueFlow.api_get_intent(text);
+//
+///* action call to deal with the string get*/        
+//        //this.replyText(replyToken, APIresponse);
+//        
+//        switch(APIresponse) {
+//        	case "sudo":
+//        		feature= new FeatureSudo();
+//        		break;
+//        	default:
+//        		feature = new FeatureFallback();
+//        }
+//        
+//        replyText(replyToken,feature.call(user,text));
 //        
 //        switch (text) {
 //        	case "sudo login":
