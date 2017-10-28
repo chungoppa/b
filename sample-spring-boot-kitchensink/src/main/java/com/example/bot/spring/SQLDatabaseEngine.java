@@ -14,7 +14,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	@Override
 	String search(String text) throws Exception {
 		//Write your code here
-		String result;
+/*		String result;
 		Connection connection=getConnection();
 		
 		PreparedStatement stmt=connection.prepareStatement("SELECT response FROM chatbotDBTable "
@@ -35,6 +35,26 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		stmt.close();
 		connection.close();
 		return result;
+		
+*/		String resultString = "";
+		Connection connection = getConnection();
+		String[] keywords = text.split(" ");
+		int hitpoint = 0;
+		for(String keyword:keywords)
+		{
+			PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
+				+ "WHERE LOWER(keyword) LIKE LOWER( CONCAT('%',?,'%') )");
+			stmt.setString(1,keyword);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				resultString = rs.getString(2);
+			}
+			rs.close();
+			stmt.close();
+			if(!resultString.equals("")) break;
+		}
+		connection.close();
+		return resultString;
 	}
 	
 	

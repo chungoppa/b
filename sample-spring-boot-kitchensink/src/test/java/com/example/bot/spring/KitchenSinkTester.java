@@ -97,7 +97,7 @@ public class KitchenSinkTester {
 	@Autowired
 	private SQLDatabaseEngine databaseEngine;
 	
-	@Test
+	/*@Test
 	public void testSQLFound1() throws Exception {
 		boolean thrown = false;
 		String result = null;
@@ -184,6 +184,19 @@ public class KitchenSinkTester {
 			thrown = true;
 		}
 		assertThat(thrown).isEqualTo(true);
+	}*/
+	
+	@Test
+	public void keyword1() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("function");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("This is a chatbot that provides booking service");
 	}
 	
 }
