@@ -63,16 +63,6 @@ public class KitchenSinkTester {
 	}
 	
 	@Test
-	public void testtextHandler() throws Exception {
-		boolean thrown = false;
-		KitchenSinkController kt=new KitchenSinkController();
-		User user=new User("id");
-		String result = kt.testtexttextHandler("sudo login",user);
-		assertThat(result).isEqualTo("userID: ");
-	}
-	
-
-	@Test
 	public void testAPI1() throws Exception {
 		boolean thrown = false;
 		String result = null;

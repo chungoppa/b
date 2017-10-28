@@ -214,13 +214,19 @@ public class KitchenSinkController {
 /*test responsing*/        
         if(text.equals("test")) {
         	this.replyText(replyToken,"ID=\n"+user.getUserID()+"\nText=\n"+text+"\nContext=\n"+user.getContext());
-        }        
-/*in case of pre-context*/
+        }
+/*Analysise pre-context*/
         
-        if(!user.getContext().equals("0")) {
-        	String context=user.getContext();
-        	String contextFromFeature = context.substring(0, context.indexOf("_"));
-        	String contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length());
+        String context=user.getContext();
+        String contextFromFeature="none";
+        String contextInFeature="none";
+        if(context.indexOf("_")>0) {
+        	contextFromFeature = context.substring(0, context.indexOf("_"));
+        	contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length());
+        }
+    	
+/*in case of pre-context and not understanded by AI*/
+        if( (!contextFromFeature.equals("none")) && (APIresponse.equals("none")) ) {
     		if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:feature\n"+ contextFromFeature+"\nDEBUG:context\n"+contextInFeature)));
         	switch(contextFromFeature) {
         	case "sudo":
@@ -231,10 +237,10 @@ public class KitchenSinkController {
         	if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:APIresponse\n"+ APIresponse)));
 	        switch(APIresponse) {
 	    	case "sudo":
-	    		feature= new FeatureSudo(user);
+	    		feature= new FeatureSudo(user,"none");
 	    		break;
 	    	default:
-	    		feature = new FeatureFallback(user);
+	    		feature = new FeatureFallback(user,"none");
 	        }
         }    
 	    return feature.call(text);

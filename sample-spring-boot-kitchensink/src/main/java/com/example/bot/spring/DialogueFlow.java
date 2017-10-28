@@ -36,8 +36,11 @@ public class DialogueFlow {
          
          if (response.getStatus().getCode() == 200) { 
         	 res= result.getMetadata().getIntentName();
+        	 if(res.equals("fallback")) {
+        		 res="none";
+        	 }
          } else {
-        	 res= "fallback";
+        	 res= "none";
          }
        } catch (Exception ex) {
          //ex.printStackTrace();

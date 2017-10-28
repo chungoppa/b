@@ -16,7 +16,7 @@ public class FeatureSudo extends Features {
 	@Override
 	public String call(String text) {
 		switch(context) {
-		case "0":
+		case "none":
 			switch(text) {
 			case "sudo login":
 				user.setContext("sudo_requestID");
