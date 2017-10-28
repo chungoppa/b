@@ -231,10 +231,10 @@ public class KitchenSinkController {
         	lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(APIresponse)));
 	        switch(APIresponse) {
 	    	case "sudo":
-	    		feature= new FeatureSudo(user,APIresponse);
+	    		feature= new FeatureSudo(user,"0");
 	    		break;
 	    	default:
-	    		feature = new FeatureFallback(user,APIresponse);
+	    		feature = new FeatureFallback(user,"0");
 	        }
         }    
 	    return feature.call(text);
