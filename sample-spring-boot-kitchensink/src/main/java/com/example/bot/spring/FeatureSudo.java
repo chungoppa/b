@@ -19,7 +19,7 @@ public class FeatureSudo extends Features {
 		case "0":
 			switch(text) {
 			case "sudo login":
-				user.setContext("requestID");
+				user.setContext("sudo_requestID");
 				result="userID: ";
 				break;
 			default:
@@ -41,12 +41,12 @@ public class FeatureSudo extends Features {
 			break;
 		case "requestID":
 			user.param.put("ID",text);
-			user.setContext("requestPW");
+			user.setContext("sudo_requestPW");
 			result="userPW: ";
 			break;		
 		case "requestPW":
 			user.param.put("PW",text);
-			user.setContext("requestDone");
+			user.setContext("sudo_requestDone");
 			login(user);
 			break;
 		default:

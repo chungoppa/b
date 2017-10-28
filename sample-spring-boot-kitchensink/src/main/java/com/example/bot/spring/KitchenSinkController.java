@@ -221,14 +221,14 @@ public class KitchenSinkController {
         	String context=user.getContext();
         	String contextFromFeature = context.substring(0, context.indexOf("_")-1);
         	String contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length()-1);
-    		lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(contextFromFeature+"\n"+contextInFeature)));
+    		lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:feature\n"+ contextFromFeature+"\ncontext\n"+contextInFeature)));
         	switch(contextFromFeature) {
         	case "sudo":
         		feature=new FeatureSudo(user,contextInFeature);
         	}
         }else {
 /*selecting features from the text context*/
-        	lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(APIresponse)));
+        	lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:APIresponse\n"+ APIresponse)));
 	        switch(APIresponse) {
 	    	case "sudo":
 	    		feature= new FeatureSudo(user);
