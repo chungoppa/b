@@ -33,5 +33,7 @@ dependencies {
 
 test {
     //environment "DATABASE_URL", "PUT YOUR URI HERE"
-	environment "DATABASE_URL", "postgres://bvvhkvxkoobmxz:b43837da215b6b232a16b0f66a03bcb392ce2ff4d44fc768f6a3b7cb79d2c863@ec2-54-225-237-64.compute-1.amazonaws.com:5432/d5p05tqekvlk61" 
+	environment "DATABASE_URL", "postgres://bvvhkvxkoobmxz:b43837da215b6b232a16b0f66a03bcb392ce2ff4d44fc768f6a3b7cb79d2c863@ec2-54-225-237-64.compute-1.amazonaws.com:5432/d5p05tqekvlk61"
+	environment "API_TOKEN","067909a52c4e454596d1f3b5385c65fa"
+	
 }

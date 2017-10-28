@@ -1,17 +1,5 @@
 /*
- * Copyright 2016 LINE Corporation
- *
- * LINE Corporation licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
+ * Controller of the application
  */
 
 package com.example.bot.spring;
@@ -39,6 +27,7 @@ import com.google.common.io.ByteStreams;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.action.PostbackAction;
@@ -83,16 +72,25 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
-
+import java.util.HashMap;
 @Slf4j
 @LineMessageHandler
 public class KitchenSinkController {
-	
-
+	/**
+	 * if Debug is enable: API response and user context will be display
+	 */
+	public static final boolean DEBUG=true;
+	/**
+	 * static Dictionary of all User
+	 * key: userID
+	 * value: User object
+	 */
+	public static HashMap<String,User> allUser=new HashMap<String,User>();
 
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
-
+	
+/* Event Mapping */
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
 		log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -178,7 +176,12 @@ public class KitchenSinkController {
 	public void handleOtherEvent(Event event) {
 		log.info("Received message(Ignored): {}", event);
 	}
-
+/*End of Event Mappig*/
+	/**
+	 * reply General Message
+	 * @param replyToken
+	 * @param message Type: Message
+	 */
 	private void reply(@NonNull String replyToken, @NonNull Message message) {
 		reply(replyToken, Collections.singletonList(message));
 	}
@@ -192,6 +195,11 @@ public class KitchenSinkController {
 		}
 	}
 
+	/**
+	 * reply Text message
+	 * @param replyToken
+	 * @param message Type: String
+	 */
 	private void replyText(@NonNull String replyToken, @NonNull String message) {
 		if (replyToken.isEmpty()) {
 			throw new IllegalArgumentException("replyToken must not be empty");
@@ -202,66 +210,182 @@ public class KitchenSinkController {
 		this.reply(replyToken, new TextMessage(message));
 	}
 
-
-	private void handleSticker(String replyToken, StickerMessageContent content) {
+/*Handler*/	
+	/**
+	 * Handler of sticker, echo
+	 * 
+	 * @param replyToken
+	 * @param content
+	 */
+ 	private void handleSticker(String replyToken, StickerMessageContent content) {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
+	
+	/**
+	 * Handler of text, input message converted to String for easier manuipulation
+	 * 
+	 * @param replyToken	the token to reply
+	 * @param text	the text user inputted
+	 * @param user 	the info of a specif user.
+	 * 
+	 * 
+	 */
+	private String texttextHandler(String text,User user) { 
+		Feature feature=null;
+/* Analysis the message Using DiagloueFlow */       
+        String AIresponse=DialogueFlow.api_get_intent(text);
 
+/*test responsing*/        
+        if(text.equals("test")) {
+        	return "ID=\n"+user.getUserID()+"\nText=\n"+text+"\nContext=\n"+user.getContext();
+        }
+/*Analysise pre-context*/    
+        String context=user.getContext();
+        String contextFromFeature="none";
+        String contextInFeature="none";
+        if(context.indexOf("_")>0) {
+        	contextFromFeature = context.substring(0, context.indexOf("_"));
+        	contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length());
+        }
+        String debugMessage="DEBUG_INFO"+
+        		"DEBUG:AIresponse" + "\n"
+        		+ AIresponse + "\n"
+        		+ "DEBUG:feature" + "\n"
+        		+ contextFromFeature + "\n"
+        		+ "DEBUG:context" + "\n"
+        		+ contextInFeature;
+        
+        if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(debugMessage)));
+    	
+/*in case of pre-context and not understanded by AI*/
+        if( (!contextFromFeature.equals("none")) && (AIresponse.equals("none")) ) {
+        	switch(contextFromFeature) {
+        	case "sudo":
+        		feature=new FeatureSudo(user,contextInFeature);
+        	}
+        }else {
+        	
+/*selecting features from the text context*/
+	        switch(AIresponse) {
+	    	case "sudo":
+	    		feature= new FeatureSudo(user,"none");
+	    		break;
+	    	default:
+	    		feature = new FeatureDefaultHandler(user,"none");
+	        }
+        }    
+	    return feature.call(text);
+
+	}
+	/**
+	 * public interface for testing only
+	 * @param inputText
+	 * @param user
+	 */
+	public String testtexttextHandler(String inputText,User user) {
+		return texttextHandler(inputText, user);
+	}
+
+	/**
+	 * Text Handler
+	 * Directly call replyText() to reply text. anything after replyText() execute will not be run as   
+	 * the thread will terminate
+	 * 
+	 * @param replyToken	toekn from the event
+	 * @param event	info of event
+	 * @param content	TextMessageContent: line Struct
+	 * 
+	 * 
+	 * 
+	 */
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
-        String text = content.getText();
-
+/* Convert TextMessageContent to lowercase text*/
+		String text = content.getText();
+        text=text.toLowerCase();
         log.info("Got text message from {}: {}", replyToken, text);
         
-//        String APIresponse=DialogueFlow.api_get_intent(text);
-//        this.replyText(replyToken, APIresponse);
+/* Get the Previous user record or make a new user */        
+        String userID = event.getSource().getUserId();
+        User user=allUser.get(userID);
+        if(user==null){
+        	user=new User(userID);
+        	allUser.put(userID,user);
+        }
         
-        switch (text) {
-            case "profile": {
-                String userId = event.getSource().getUserId();
-                if (userId != null) {
-                    lineMessagingClient
-                            .getProfile(userId)
-                            .whenComplete(new ProfileGetter (this, replyToken));
-                } else {
-                    this.replyText(replyToken, "Bot can't use profile API without user ID");
-                }
-                break;
-            }
-            case "confirm": {
-                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-                        "Do it?",
-                        new MessageAction("Yes", "Yes!"),
-                        new MessageAction("No", "No!")
-                );
-                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-                this.reply(replyToken, templateMessage);
-                break;
-            }
-            case "carousel": {
-                String imageUrl = createUri("/static/buttons/1040.jpg");
-                CarouselTemplate carouselTemplate = new CarouselTemplate(
-                        Arrays.asList(
-                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                        new URIAction("Go to line.me",
-                                                      "https://line.me"),
-                                        new PostbackAction("Say hello1",
-                                                           "hello u")
-                                )),
-                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                        new PostbackAction("hello2",
-                                                           "hello 123",
-                                                           "hello 456"),
-                                        new MessageAction("Say message",
-                                                          "Rice=on")
-                                ))
-                        ));
-                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
-                this.reply(replyToken, templateMessage);
-                break;
-            }
+        String replyStatement=texttextHandler(text,user);
+        replyText(replyToken,replyStatement);
 
-            default:
+///* action call to deal with the string get*/        
+//       
+//        
+//        switch(AIresponse) {
+//        	case "sudo":
+//        		feature= new FeatureSudo();
+//        		break;
+//        	default:
+//        		feature = new FeatureFallback();
+//        }
+//        
+//        replyText(replyToken,feature.call(user,text));
+//        
+//        switch (text) {
+//        	case "sudo login":
+//        		break;
+//        	case "sudo" :
+//        		String para="API Token: "+ DialogueFlow.getToken()
+//        				+ "\nDatabase_URL:" + System.getenv("DATABASE_URL");
+//        		this.replyText(replyToken, para);
+//        		break;
+//            case "profile": {
+//                String userId = event.getSource().getUserId();
+//                if (userId != null) {
+//                    lineMessagingClient
+//                            .getProfile(userId)
+//                            .whenComplete(new ProfileGetter (this, replyToken));
+//                } else {
+//                    this.replyText(replyToken, "Bot can't use profile API without user ID");
+//                }
+//                break;
+//            }
+//            case "confirm": {
+//                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
+//                        "Do it?",
+//                        new MessageAction("Yes", "Yes!"),
+//                        new MessageAction("No", "No!")
+//                );
+//                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
+//                this.reply(replyToken, templateMessage);
+//                break;
+//            }
+//            case "carousel": {
+//                String imageUrl = createUri("/static/buttons/1040.jpg");
+//                CarouselTemplate carouselTemplate = new CarouselTemplate(
+//                        Arrays.asList(
+//                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+//                                        new URIAction("Go to line.me",
+//                                                      "https://line.me"),
+//                                        new PostbackAction("Say hello1",
+//                                                           "hello u")
+//                                )),
+//                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+//                                        new PostbackAction("hello2",
+//                                                           "hello 123",
+//                                                           "hello 456"),
+//                                        new MessageAction("Say message",
+//                                                          "Rice=on")
+//                                ))
+//                        ));
+//                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+//                this.reply(replyToken, templateMessage);
+//                break;
+//            }
+//
+//            default:
+//                
+//              String AIresponse=DialogueFlow.api_get_intent(text);
+//              this.replyText(replyToken, AIresponse);
+/*              
             	String reply = null;
             	try {
             		reply = database.search(text);
@@ -274,7 +398,9 @@ public class KitchenSinkController {
                         itscLOGIN + " says " + reply
                 );
                 break;
+                
         }
+*/	
     }
 
 	static String createUri(String path) {
@@ -315,19 +441,14 @@ public class KitchenSinkController {
 		return new DownloadedContent(tempFile, createUri("/downloaded/" + tempFile.getFileName()));
 	}
 
-
-	
-
-
 	public KitchenSinkController() {
 		//database = new DatabaseEngine(); // COMMENT_TLKOO
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 	}
-
+	
 	private DatabaseEngine database;
 	private String itscLOGIN;
-	
 
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below
