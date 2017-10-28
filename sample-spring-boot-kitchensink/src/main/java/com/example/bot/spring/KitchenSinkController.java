@@ -76,8 +76,16 @@ import java.util.HashMap;
 @Slf4j
 @LineMessageHandler
 public class KitchenSinkController {
+	/**
+	 * if Debug is enable: API response and user context will be display
+	 */
 	public static final boolean DEBUG=true;
-
+	/**
+	 * static Dictionary of all User
+	 * key: userID
+	 * value: User object
+	 */
+	public static HashMap<String,User> allUser=new HashMap<String,User>();
 
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
@@ -90,7 +98,7 @@ public class KitchenSinkController {
 		TextMessageContent message = event.getMessage();
 		handleTextContent(event.getReplyToken(), event, message);
 	}
-/*
+
 	@EventMapping
 	public void handleStickerMessageEvent(MessageEvent<StickerMessageContent> event) {
 		handleSticker(event.getReplyToken(), event.getMessage());
@@ -167,7 +175,12 @@ public class KitchenSinkController {
 	public void handleOtherEvent(Event event) {
 		log.info("Received message(Ignored): {}", event);
 	}
-*/
+/*End of Event Mappig*/
+	/**
+	 * reply General Message
+	 * @param replyToken
+	 * @param message Type: Message
+	 */
 	private void reply(@NonNull String replyToken, @NonNull Message message) {
 		reply(replyToken, Collections.singletonList(message));
 	}
@@ -181,6 +194,11 @@ public class KitchenSinkController {
 		}
 	}
 
+	/**
+	 * reply Text message
+	 * @param replyToken
+	 * @param message Type: String
+	 */
 	private void replyText(@NonNull String replyToken, @NonNull String message) {
 		if (replyToken.isEmpty()) {
 			throw new IllegalArgumentException("replyToken must not be empty");
@@ -191,25 +209,25 @@ public class KitchenSinkController {
 		this.reply(replyToken, new TextMessage(message));
 	}
 
+/*Handler*/	
 
-/*
  	private void handleSticker(String replyToken, StickerMessageContent content) {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
-*/	
-/**
- * Handler of text, but all the structure and changed to String for easier handling
- * 
- * @param replyToken	the token to reply
- * @param text	the text user inputted
- * @param user 	the info of a specif user.
- * 
- * 
- */
+	
+	/**
+	 * Handler of text, message converted to String for easier manuipulation
+	 * 
+	 * @param replyToken	the token to reply
+	 * @param text	the text user inputted
+	 * @param user 	the info of a specif user.
+	 * 
+	 * 
+	 */
 	private String texttextHandler(String replyToken, String text,User user) { 
 		Features feature=null;
-/* Analysis the message */       
-        String APIresponse=DialogueFlow.api_get_intent(text);
+/* Analysis the message Using DiagloueFlow */       
+        String AIresponse=DialogueFlow.api_get_intent(text);
 
 /*test responsing*/        
         if(text.equals("test")) {
@@ -224,18 +242,25 @@ public class KitchenSinkController {
         	contextFromFeature = context.substring(0, context.indexOf("_"));
         	contextInFeature = 	context.substring(context.indexOf("_")+1 , context.length());
         }
+        String debugMessage="DEBUG_INFO"+
+        		"DEBUG:AIresponse" + "\n"
+        		+ AIresponse + "\n"
+        		+ "DEBUG:feature" + "\n"
+        		+ contextFromFeature + "\n"
+        		+ "DEBUG:context" + "\n"
+        		+ contextInFeature + "\n";
+        
+        if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(debugMessage)));
     	
 /*in case of pre-context and not understanded by AI*/
-        if( (!contextFromFeature.equals("none")) && (APIresponse.equals("none")) ) {
-    		if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:feature\n"+ contextFromFeature+"\nDEBUG:context\n"+contextInFeature)));
+        if( (!contextFromFeature.equals("none")) && (AIresponse.equals("none")) ) {
         	switch(contextFromFeature) {
         	case "sudo":
         		feature=new FeatureSudo(user,contextInFeature);
         	}
         }else {
 /*selecting features from the text context*/
-        	if(DEBUG)lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage("DEBUG:APIresponse\n"+ APIresponse)));
-	        switch(APIresponse) {
+	        switch(AIresponse) {
 	    	case "sudo":
 	    		feature= new FeatureSudo(user,"none");
 	    		break;
@@ -248,6 +273,7 @@ public class KitchenSinkController {
 	}
 
 /**
+ * Text Handler
  * Directly call replyText() to reply text. anything after replyText() execute will not be run as   
  * the thread will terminate
  * 
@@ -258,7 +284,6 @@ public class KitchenSinkController {
  * 
  * 
  */
-	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
 /* Convert TextMessageContent to lowercase text*/
@@ -280,7 +305,7 @@ public class KitchenSinkController {
 ///* action call to deal with the string get*/        
 //       
 //        
-//        switch(APIresponse) {
+//        switch(AIresponse) {
 //        	case "sudo":
 //        		feature= new FeatureSudo();
 //        		break;
@@ -344,8 +369,8 @@ public class KitchenSinkController {
 //
 //            default:
 //                
-//              String APIresponse=DialogueFlow.api_get_intent(text);
-//              this.replyText(replyToken, APIresponse);
+//              String AIresponse=DialogueFlow.api_get_intent(text);
+//              this.replyText(replyToken, AIresponse);
 /*              
             	String reply = null;
             	try {
@@ -411,17 +436,9 @@ public class KitchenSinkController {
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 	}
-
-	public static HashMap<String,User> allUser=new HashMap<String,User>();
+	
 	private DatabaseEngine database;
 	private String itscLOGIN;
-/**
- * testing interface for texttetHandler
- */
-	public String testtexttextHandler(String text,User user) {
-		return texttextHandler(null,text,user);
-	}
-	
 
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below
