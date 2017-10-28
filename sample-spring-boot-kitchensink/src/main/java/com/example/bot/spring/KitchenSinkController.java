@@ -215,7 +215,10 @@ public class KitchenSinkController {
         	User.allUser.put(userID,user);
         }
         if (text=="context") {
-        	replyText(replyToken,user.getContext());
+        	String result=user.getContext();
+        	if(result!=null)
+        		replyText(replyToken,result);
+        	else replyText(replyToken,"null");
         }
 /* Analysis the message */       
         String APIresponse=DialogueFlow.api_get_intent(text);
