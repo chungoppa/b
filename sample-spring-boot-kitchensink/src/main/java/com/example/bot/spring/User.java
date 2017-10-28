@@ -3,11 +3,11 @@ import java.util.HashMap;
 import java.lang.String;
 
 public class User {
-	public static UserCollection allUser=new UserCollection();
-	private String context;
-	private String intent;
+//	public static UserCollection allUser=new UserCollection();
+	private String context="0";
+	private String intent="0";
 	private String userID;
-	private String userName;
+	private String userName="0";
 	public HashMap<String,String> param=new HashMap<String,String>();
 	
 	public String getContext() {return this.context;}
@@ -23,11 +23,11 @@ public class User {
 
 	}
 }
-
-@SuppressWarnings("serial")
-class UserCollection extends HashMap<String,User>{
-	public static void test(){
-		
-	}
-	
-}
+//
+//@SuppressWarnings("serial")
+//class UserCollection extends HashMap<String,User>{
+//	public static void test(){
+//		
+//	}
+//	
+//}

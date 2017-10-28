@@ -71,7 +71,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
-
+import java.util.HashMap;
 @Slf4j
 @LineMessageHandler
 public class KitchenSinkController {
@@ -212,22 +212,17 @@ public class KitchenSinkController {
         log.info("Got text message from {}: {}", replyToken, text);
 /* Get the Previous user record or make a new user */        
         String userID = event.getSource().getUserId();
-        User user=User.allUser.get(userID);
-        if(user!=null) {
-        	
-        }else
-        {
+        User user=allUser.get(userID);
+        if(user==null){
         	user=new User(userID);
-        	User.allUser.put(userID,user);
+        	allUser.put(userID,user);
         }
 //test        
-        if (text=="context") {
         	String result=user.getContext();
-        	if(result!=null)
-        		replyText(replyToken,result);
-        	else replyText(replyToken,"null");
-        }
+  
+        replyText(replyToken,result);
 
+        replyText(replyToken, "XDXD");
 //        
 ///* Analysis the message */       
 //        String APIresponse=DialogueFlow.api_get_intent(text);
@@ -367,6 +362,7 @@ public class KitchenSinkController {
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 	}
 
+	public static HashMap<String,User> allUser=new HashMap<String,User>();
 	private DatabaseEngine database;
 	private String itscLOGIN;
 	
