@@ -197,7 +197,7 @@ public class KitchenSinkController {
 	}
 */	
 
-	private void (String text,String userID) {
+	private void texttextHandler(String reply Token, String text,String userID) {
 		
 	}
 	
