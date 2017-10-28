@@ -213,7 +213,7 @@ public class KitchenSinkController {
 
 /*test responsing*/        
         if(text.equals("test")) {
-        	this.replyText(replyToken,user.getUserID()+"\n"+text);
+        	this.replyText(replyToken,user.getUserID()+"\n"+text+"\n"+user.getContext());
         }        
 /*in case of pre-context*/
         if(!user.getContext().equals("0")) {
