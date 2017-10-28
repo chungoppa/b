@@ -44,6 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.example.bot.spring.DatabaseEngine;
 import com.example.bot.spring.User;
+import com.example.bot.spring.KitchenSinkController;
 
 //Project code
 @RunWith(SpringRunner.class)
@@ -59,6 +60,15 @@ public class KitchenSinkTester {
 		Features feature=new FeatureFallback(user);
 		result=feature.call("whatever");
 		assertThat(result).isEqualTo("Fallback");
+	}
+	
+	@Test
+	public void testtextHandler() throws Exception {
+		boolean thrown = false;
+		KitchenSinkController kt=new KitchenSinkController();
+		User user=new User("id");
+		String result = kt.testtexttextHandler("sudo login",user);
+		assertThat(result).isEqualTo("userID: ");
 	}
 	
 

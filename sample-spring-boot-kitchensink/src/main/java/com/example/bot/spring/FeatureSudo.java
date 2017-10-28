@@ -11,7 +11,6 @@ public class FeatureSudo extends Features {
 		String PW=user.param.get("PW");
 		result="logined, \n"+ID+"\n"+PW;
 		user.setContext("logined");
-
 	}
 	
 	@Override

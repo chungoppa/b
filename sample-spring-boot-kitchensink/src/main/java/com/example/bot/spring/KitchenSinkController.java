@@ -206,7 +206,7 @@ public class KitchenSinkController {
  * 
  * 
  */
-	private void texttextHandler(String replyToken, String text,User user) { 
+	private String texttextHandler(String replyToken, String text,User user) { 
 		Features feature=null;
 /* Analysis the message */       
         String APIresponse=DialogueFlow.api_get_intent(text);
@@ -231,16 +231,21 @@ public class KitchenSinkController {
         	lineMessagingClient.pushMessage(new PushMessage(user.getUserID(),new TextMessage(APIresponse)));
 	        switch(APIresponse) {
 	    	case "sudo":
-	    		feature= new FeatureSudo(user,text);
+	    		feature= new FeatureSudo(user,APIresponse);
 	    		break;
 	    	default:
-	    		feature = new FeatureFallback(user,text);
+	    		feature = new FeatureFallback(user,APIresponse);
 	        }
         }    
-	    this.replyText(replyToken,feature.call(text));
+	    return feature.call(text);
 
 	}
-	
+/**
+ * testing interface for texttetHandler
+ */
+	public String testtexttextHandler(String text,User user) {
+		return texttextHandler(null,text,user);
+	}
 /**
  * Directly call replyText() to reply text. anything after replyText() execute will not be run as   
  * the thread will terminate
@@ -268,7 +273,8 @@ public class KitchenSinkController {
         	allUser.put(userID,user);
         }
         
-        texttextHandler(replyToken, text,user);
+        String replyStatement=texttextHandler(replyToken, text,user);
+        replyText(replyToken,replyStatement);
 
 ///* action call to deal with the string get*/        
 //       
