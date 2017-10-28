@@ -215,11 +215,11 @@ public class KitchenSinkController {
         	allUser.put(userID,user);
         }
         if(text=="test") {
-        	replyText(replyToken,user.getUserID());
-        }
-//test        
+        	this.replyText(replyToken,userID);
+        }        
         feature= new FeatureSudo();
-        replyText(replyToken,feature.call(user,text));
+        this.replyText(replyToken,feature.call(user,text));
+        
 //        
 ///* Analysis the message */       
 //        String APIresponse=DialogueFlow.api_get_intent(text);
