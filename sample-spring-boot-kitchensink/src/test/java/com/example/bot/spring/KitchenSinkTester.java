@@ -196,8 +196,7 @@ public class KitchenSinkTester {
 			thrown = true;
 		}
 		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("abc");
-		//assertThat(result).isEqualTo("This is a chatbot that provides booking service");
+		assertThat(result).isEqualTo("This is a chatbot that provides booking service");
 	}
 	
 }

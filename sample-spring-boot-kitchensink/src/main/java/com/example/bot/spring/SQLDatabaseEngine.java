@@ -35,8 +35,8 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		stmt.close();
 		connection.close();
 		return result;
-		
-*/		String resultString = "";
+		*/
+		/*String resultString = "";
 		Connection connection = getConnection();
 		String[] keywords = text.split(" ");
 		int hitpoint = 0;
@@ -54,7 +54,20 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			if(!resultString.equals("")) break;
 		}
 		connection.close();
-		return "abc";
+		return resultString;*/
+		String resultString = "";
+		Connection connection = getConnection();
+		PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
+				+ "WHERE LOWER(keyword) LIKE LOWER( CONCAT('%',?,'%') )");
+			stmt.setString(1,text);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				resultString = rs.getString(2);
+			}
+			rs.close();
+			stmt.close();
+			connection.close();
+			return resultString;
 	}
 	
 	
