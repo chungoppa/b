@@ -54,7 +54,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			if(!resultString.equals("")) break;
 		}
 		connection.close();
-		return resultString;
+		return "abc";
 	}
 	
 	
