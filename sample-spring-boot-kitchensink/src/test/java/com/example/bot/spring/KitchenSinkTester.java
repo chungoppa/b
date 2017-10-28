@@ -44,6 +44,43 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.example.bot.spring.DatabaseEngine;
 
+//Project code
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { KitchenSinkTester.class, DialogueFlow.class})
+public class KitchenSinkTester {
+	@Autowired
+	
+	@Test
+	public void testAPI1() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = "Greetings";
+			result = DialogueFlow.api_get_intent("hi");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("smalltalk.greetings");
+	}
+	
+	@Test
+	public void testAPI2() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = "Greetings";
+			result = DialogueFlow.api_get_intent("fuck");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("test.slang");
+	}
+}
+	
+	
+
 //LAB2 - code static
 /*
 @RunWith(SpringRunner.class)
@@ -91,43 +128,14 @@ public class KitchenSinkTester {
 */
 
 //LAB3 - code -SQL
+/*	
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class, DialogueFlow.class})
+@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class})
 public class KitchenSinkTester {
 	@Autowired
 	private SQLDatabaseEngine databaseEngine;
 	
 	@Test
-	public void testAPI1() throws Exception {
-		boolean thrown = false;
-		String result = null;
-		try {
-			result = "Greetings";
-			result = DialogueFlow.api_get_intent("hi");
-		} catch (Exception e) {
-			thrown = true;
-		}
-		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("smalltalk.greetings");
-	}
-	
-	@Test
-	public void testAPI2() throws Exception {
-		boolean thrown = false;
-		String result = null;
-		try {
-			result = "Greetings";
-			result = DialogueFlow.api_get_intent("fuck");
-		} catch (Exception e) {
-			thrown = true;
-		}
-		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("test.slang");
-	}
-	
-	
-	
-/*	@Test
 	public void testSQLFound1() throws Exception {
 		boolean thrown = false;
 		String result = null;
@@ -216,5 +224,6 @@ public class KitchenSinkTester {
 		}
 		assertThat(thrown).isEqualTo(true);
 	}
-*/	
+
 }
+*/
