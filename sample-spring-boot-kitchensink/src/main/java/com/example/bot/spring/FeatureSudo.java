@@ -6,7 +6,7 @@ import java.lang.String;
  *  
 */
 public class FeatureSudo implements Features {
-	private String result=null;
+	private String result="<<default fallback here>>";
 
 	private void login(User user) {
 		String ID=user.param.get("ID");
@@ -37,7 +37,7 @@ public class FeatureSudo implements Features {
 				result="userID: ";
 				break;
 			default:
-					
+				result="inside - "+text;
 			}
 			break;
 		default:

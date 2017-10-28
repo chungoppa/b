@@ -224,9 +224,9 @@ public class KitchenSinkController {
         	user=new User(userID);
         	allUser.put(userID,user);
         }
-    //    if(text=="test") {
+        if(text.equals("test")) {
         	this.replyText(replyToken,userID+"\n"+text);
-      //  }        
+        }        
         feature= new FeatureSudo();
         this.replyText(replyToken,feature.call(user,text));
         
