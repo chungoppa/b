@@ -12,6 +12,7 @@ public class FeatureSudo implements Features {
 		String ID=user.param.get("ID");
 		String PW=user.param.get("PW");
 		result="logined, \n"+ID+"\n"+PW;
+		user.setContext("logined");
 
 	}
 	
