@@ -89,7 +89,7 @@ public class KitchenSinkController {
 
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
-
+/* Event Mapping */
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
 		log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -210,13 +210,18 @@ public class KitchenSinkController {
 	}
 
 /*Handler*/	
-
+	/**
+	 * Handler of sticker, echo
+	 * 
+	 * @param replyToken
+	 * @param content
+	 */
  	private void handleSticker(String replyToken, StickerMessageContent content) {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
 	
 	/**
-	 * Handler of text, message converted to String for easier manuipulation
+	 * Handler of text, input message converted to String for easier manuipulation
 	 * 
 	 * @param replyToken	the token to reply
 	 * @param text	the text user inputted
@@ -225,7 +230,7 @@ public class KitchenSinkController {
 	 * 
 	 */
 	private String texttextHandler(String replyToken, String text,User user) { 
-		Features feature=null;
+		Feature feature=null;
 /* Analysis the message Using DiagloueFlow */       
         String AIresponse=DialogueFlow.api_get_intent(text);
 
@@ -265,25 +270,25 @@ public class KitchenSinkController {
 	    		feature= new FeatureSudo(user,"none");
 	    		break;
 	    	default:
-	    		feature = new FeatureFallback(user,"none");
+	    		feature = new FeatureDefaultHandler(user,"none");
 	        }
         }    
 	    return feature.call(text);
 
 	}
 
-/**
- * Text Handler
- * Directly call replyText() to reply text. anything after replyText() execute will not be run as   
- * the thread will terminate
- * 
- * @param replyToken	toekn from the event
- * @param event	info of event
- * @param content	TextMessageContent: line Struct
- * 
- * 
- * 
- */
+	/**
+	 * Text Handler
+	 * Directly call replyText() to reply text. anything after replyText() execute will not be run as   
+	 * the thread will terminate
+	 * 
+	 * @param replyToken	toekn from the event
+	 * @param event	info of event
+	 * @param content	TextMessageContent: line Struct
+	 * 
+	 * 
+	 * 
+	 */
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
 /* Convert TextMessageContent to lowercase text*/
@@ -426,10 +431,6 @@ public class KitchenSinkController {
 		tempFile.toFile().deleteOnExit();
 		return new DownloadedContent(tempFile, createUri("/downloaded/" + tempFile.getFileName()));
 	}
-
-
-	
-
 
 	public KitchenSinkController() {
 		//database = new DatabaseEngine(); // COMMENT_TLKOO

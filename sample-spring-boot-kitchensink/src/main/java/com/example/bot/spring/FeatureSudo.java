@@ -1,11 +1,11 @@
 package com.example.bot.spring;
 import java.lang.String;
-/*
- * Testing feature 
- * 
- *  
-*/
-public class FeatureSudo extends Features {
+/**
+ * Testing Features, a login simple login to get the environment variable
+ * @author matth
+ *
+ */
+public class FeatureSudo extends Feature {
 	private void login(User user) {
 		String ID=user.param.get("ID");
 		String PW=user.param.get("PW");

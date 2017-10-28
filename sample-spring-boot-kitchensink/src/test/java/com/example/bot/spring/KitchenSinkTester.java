@@ -57,9 +57,9 @@ public class KitchenSinkTester {
 		boolean thrown = false;
 		String result = null;
 		User user=new User("123");
-		Features feature=new FeatureFallback(user);
+		Feature feature=new FeatureDefaultHandler(user);
 		result=feature.call("whatever");
-		assertThat(result).isEqualTo("Fallback");
+		assertThat(result).isEqualTo("<default message>");
 	}
 	
 	@Test
