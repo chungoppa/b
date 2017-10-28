@@ -6,10 +6,6 @@ import java.lang.String;
  *  
 */
 public class FeatureSudo extends Features {
-	private String result="<<default fallback here>>";
-	private String context;
-	private User user;
-	
 	private void login(User user) {
 		String ID=user.param.get("ID");
 		String PW=user.param.get("PW");

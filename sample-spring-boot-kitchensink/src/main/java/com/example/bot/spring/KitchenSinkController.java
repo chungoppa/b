@@ -216,9 +216,7 @@ public class KitchenSinkController {
         	this.replyText(replyToken,user.getUserID()+"\n"+text+"\n"+user.getContext());
         }        
 /*in case of pre-context*/
-
-
-		
+        
         if(!user.getContext().equals("0")) {
         	String context=user.getContext();
         	String contextFromFeature = context.substring(0, context.indexOf("_")-1);
