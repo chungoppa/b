@@ -218,11 +218,14 @@ public class KitchenSinkController {
         	allUser.put(userID,user);
         }
 //test        
-        	String result=user.getContext();
-  
-        replyText(replyToken,result);
-
-        replyText(replyToken, "XDXD");
+        feature= new FeatureSudo();
+//        replyText(replyToken,feature.call(user,text));
+//
+//        
+//        
+//        replyText(replyToken,result);
+//
+//        replyText(replyToken, "XDXD");
 //        
 ///* Analysis the message */       
 //        String APIresponse=DialogueFlow.api_get_intent(text);

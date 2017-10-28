@@ -8,6 +8,13 @@ import java.lang.String;
 public class FeatureSudo implements Features {
 	private String result=null;
 
+	private void login(User user) {
+		String ID=user.param.get("ID");
+		String PW=user.param.get("PW");
+		result="logined, \n"+ID+"\n"+PW;
+
+	}
+	
 	public String call(User user, String text) {
 		switch(user.getContext()) {
 		case "logined" :
@@ -16,25 +23,25 @@ public class FeatureSudo implements Features {
 		case "requestID":
 			user.param.put("ID",text);
 			user.setContext("requestPW");
-			result="userID: "+text;
+			result="userPW: ";
 			break;		
 		case "requestPW":
 			user.param.put("PW",text);
 			user.setContext("requestDone");
-			result="userPW: "+text;
+			login(user);
 			break;
-		
-		default:
-			if(text=="sudo login") {
+		case "0":
+			switch(text) {
+			case "sudo login":
 				user.setContext("requestID");
-				while(user.param.get("ID")==null && user.param.get("PW")==null) {
-				}
-				if (true) {
-					user.setContext("logined");
-					result="logined";
-				}
-			}else
-				result="rejected";
+				result="userID: ";
+				break;
+			default:
+					
+			}
+			break;
+		default:
+			result="rejected";
 		}
 		
 		return result;
