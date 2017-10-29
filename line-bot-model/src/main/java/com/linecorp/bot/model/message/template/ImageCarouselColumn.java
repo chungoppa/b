@@ -14,31 +14,43 @@
  * under the License.
  */
 
-package com.linecorp.bot.model.event.postback;
-
-import java.util.Map;
+package com.linecorp.bot.model.message.template;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.linecorp.bot.model.action.Action;
 import lombok.Value;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
- * Content of the postback event.
+ * Column object for carousel template
  */
 @Value
-public class PostbackContent {
+public class ImageCarouselColumn {
     /**
-     * Postback data
+     * Image URL
+     * <ul>
+     *     <li>Max 1000 characters HTTPS URL</li>
+     *     <li>JPEG or PNG</li>
+     *     <li>Aspect ratio: 1:1</li>
+     *     <li>Max width: 1024px</li>
+     *     <li>Max: 1 MB</li>
+     * </ul>
      */
-    private final String data;
-    private final Map<String, String> params;
+    private final String imageUrl;
+
+    /**
+     * Action when tapped
+     */
+    private final Action action;
 
     @JsonCreator
-    public PostbackContent(
-            @JsonProperty("data") String data,
-            @JsonProperty("params") Map<String, String> params) {
-        this.data = data;
-        this.params = params;
+    public ImageCarouselColumn(
+            @JsonProperty("imageUrl") String imageUrl,
+            @JsonProperty("action") Action action) {
+        this.imageUrl = imageUrl;
+        this.action = action;
     }
 }
