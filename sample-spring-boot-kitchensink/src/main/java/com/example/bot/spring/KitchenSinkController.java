@@ -320,8 +320,8 @@ public class KitchenSinkController {
 
 
 	public KitchenSinkController() {
-		database = new DatabaseEngine(); // COMMENT_TLKOO
-		//database = new SQLDatabaseEngine();
+		//database = new DatabaseEngine(); // COMMENT_TLKOO
+		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 	}
 

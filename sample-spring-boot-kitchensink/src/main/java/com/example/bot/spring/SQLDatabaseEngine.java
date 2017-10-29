@@ -14,7 +14,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	@Override
 	String search(String text) throws Exception {
 		//Write your code here
-/*		String result;
+		String result;
 		Connection connection=getConnection();
 		
 		PreparedStatement stmt=connection.prepareStatement("SELECT response FROM chatbotDBTable "
@@ -35,7 +35,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		stmt.close();
 		connection.close();
 		return result;
-		*/
+		/*
 		String resultString = "";
 		Connection connection = getConnection();
 		PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
@@ -49,6 +49,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			stmt.close();
 			connection.close();
 			return resultString;
+			*/
 	}
 	
 	
