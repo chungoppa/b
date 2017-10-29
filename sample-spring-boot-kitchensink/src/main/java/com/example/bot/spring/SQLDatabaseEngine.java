@@ -36,20 +36,26 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		connection.close();
 		return result;*/
 		
+		String[] keywords = text.split(" ");
+		int hit = 0;
 		String resultString = "";
 		Connection connection = getConnection();
-		PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
+		for(String keyword:keywords)
+		{
+			PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
 				+ "WHERE LOWER(keyword) LIKE LOWER( CONCAT('%',?,'%') )");
-			stmt.setString(1,text);
+			stmt.setString(1,keyword);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				resultString = rs.getString(2);
 			}
 			rs.close();
 			stmt.close();
-			connection.close();
-			return resultString;
-			
+			if(!resultString.equals(""))
+			return resultString;	
+		}	
+		connection.close();
+		return "I am not sure about what you mean. Could you please repeat your word again?";
 	}
 	
 	

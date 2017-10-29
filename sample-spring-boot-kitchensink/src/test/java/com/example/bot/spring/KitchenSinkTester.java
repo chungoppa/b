@@ -191,7 +191,7 @@ public class KitchenSinkTester {
 		boolean thrown = false;
 		String result = null;
 		try {
-			result = this.databaseEngine.search("function");
+			result = this.databaseEngine.search("What is the function of this app?");
 		} catch (Exception e) {
 			thrown = true;
 		}
