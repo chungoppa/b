@@ -14,7 +14,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	@Override
 	String search(String text) throws Exception {
 		//Write your code here
-		String result;
+		/*String result;
 		Connection connection=getConnection();
 		
 		PreparedStatement stmt=connection.prepareStatement("SELECT response FROM chatbotDBTable "
@@ -34,8 +34,8 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		rs.close();
 		stmt.close();
 		connection.close();
-		return result;
-		/*
+		return result;*/
+		
 		String resultString = "";
 		Connection connection = getConnection();
 		PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
@@ -49,12 +49,12 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			stmt.close();
 			connection.close();
 			return resultString;
-			*/
+			
 	}
 	
 	
 	private Connection getConnection() throws URISyntaxException, SQLException {
-		Connection connection;
+		/*Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
 		
 		String username;
@@ -76,9 +76,9 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		connection = DriverManager.getConnection(dbUrl, username, password);
 
 		return connection;
-		
+		*/
 
-		/*Connection connection;
+		Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
 		String username = dbUri.getUserInfo().split(":")[0];
@@ -90,7 +90,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		
 		connection = DriverManager.getConnection(dbUrl, username, password);
 
-		return connection;*/
+		return connection;
 	}
 
 		
