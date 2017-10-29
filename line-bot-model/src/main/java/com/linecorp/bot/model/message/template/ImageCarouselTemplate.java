@@ -14,31 +14,28 @@
  * under the License.
  */
 
-package com.linecorp.bot.model.event.postback;
-
-import java.util.Map;
+package com.linecorp.bot.model.message.template;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Value;
 
+import java.util.List;
+
 /**
- * Content of the postback event.
+ * Template message with multiple columns which can be cycled like a carousel.
  */
 @Value
-public class PostbackContent {
+@JsonTypeName("image_carousel")
+public class ImageCarouselTemplate implements Template {
     /**
-     * Postback data
+     * List of columns(Max: 5)
      */
-    private final String data;
-    private final Map<String, String> params;
+    private final List<ImageCarouselColumn> columns;
 
     @JsonCreator
-    public PostbackContent(
-            @JsonProperty("data") String data,
-            @JsonProperty("params") Map<String, String> params) {
-        this.data = data;
-        this.params = params;
+    public ImageCarouselTemplate(@JsonProperty("columns") List<ImageCarouselColumn> columns) {
+        this.columns = columns;
     }
 }
