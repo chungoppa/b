@@ -38,6 +38,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		stmt.close();
 		connection.close();
 		return result;
+<<<<<<< HEAD
 		}*/
 		
 		case "faq":
@@ -70,13 +71,34 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		}
 		}
 		return "I am not sure about what you mean, but I will forward your question to our agency.";
+=======
+		/*
+		String resultString = "";
+		Connection connection = getConnection();
+		PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
+				+ "WHERE LOWER(keyword) LIKE LOWER( CONCAT('%',?,'%') )");
+			stmt.setString(1,text);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				resultString = rs.getString(2);
+			}
+			rs.close();
+			stmt.close();
+			connection.close();
+			return resultString;
+			*/
+>>>>>>> 6a887c8105b5ee1d51af2a6b1c8d6a324bc7543c
 	}
 	
 	
 	
 	
 	private Connection getConnection() throws URISyntaxException, SQLException {
+<<<<<<< HEAD
 		/*Connection connection;
+=======
+/*		Connection connection;
+>>>>>>> 6a887c8105b5ee1d51af2a6b1c8d6a324bc7543c
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
 		
 		String username;
@@ -92,6 +114,21 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() +  "?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
 		}
 				
+		log.info("Username: {} Password: {}", username, password);
+		log.info ("dbUrl: {}", dbUrl);
+		
+		connection = DriverManager.getConnection(dbUrl, username, password);
+
+		return connection;*/
+		
+
+		Connection connection;
+		URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+		String username = dbUri.getUserInfo().split(":")[0];
+		String password = dbUri.getUserInfo().split(":")[1];
+		String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() +  "?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+
 		log.info("Username: {} Password: {}", username, password);
 		log.info ("dbUrl: {}", dbUrl);
 		
