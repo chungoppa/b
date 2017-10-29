@@ -44,59 +44,58 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.example.bot.spring.DatabaseEngine;
 
-
+//Project code
 @RunWith(SpringRunner.class)
-//LAB2 - code static
-/*
-@SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
-public class KitchenSinkTester {
-	@Autowired
-	private DatabaseEngine databaseEngine;
-	
-	@Test
-	public void testNotFound() throws Exception {
-		boolean thrown = false;
-		try {
-			this.databaseEngine.search("no");
-		} catch (Exception e) {
-			thrown = true;
-		}
-		assertThat(thrown).isEqualTo(true);
-	}
-	
-	@Test
-	public void testFound1() throws Exception {
-		boolean thrown = false;
-		String result = null;
-		try {
-			result = this.databaseEngine.search("abc");
-		} catch (Exception e) {
-			thrown = true;
-		}
-		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("def");
-	}
-	@Test
-	public void testFound2() throws Exception {
-		boolean thrown = false;
-		String result = null;
-		try {
-			result = this.databaseEngine.search("Hi");
-		} catch (Exception e) {
-			thrown = true;
-		}
-		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("Hey, how things going?");
-	}
-}
-*/
-
-//LAB3 - code -SQL
 @SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class })
 public class KitchenSinkTester {
+	//LAB2 - code static
+	/*
+	@SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
+	public class KitchenSinkTester {
+		@Autowired
+		private DatabaseEngine databaseEngine;
+		
+		@Test
+		public void testNotFound() throws Exception {
+			boolean thrown = false;
+			try {
+				this.databaseEngine.search("no");
+			} catch (Exception e) {
+				thrown = true;
+			}
+			assertThat(thrown).isEqualTo(true);
+		}
+		
+		@Test
+		public void testFound1() throws Exception {
+			boolean thrown = false;
+			String result = null;
+			try {
+				result = this.databaseEngine.search("abc");
+			} catch (Exception e) {
+				thrown = true;
+			}
+			assertThat(!thrown).isEqualTo(true);
+			assertThat(result).isEqualTo("def");
+		}
+		@Test
+		public void testFound2() throws Exception {
+			boolean thrown = false;
+			String result = null;
+			try {
+				result = this.databaseEngine.search("Hi");
+			} catch (Exception e) {
+				thrown = true;
+			}
+			assertThat(!thrown).isEqualTo(true);
+			assertThat(result).isEqualTo("Hey, how things going?");
+		}
+	}
+	*/
+
 	@Autowired
 	private SQLDatabaseEngine databaseEngine;
-	
+	/*
 	@Test
 	public void testSQLFound1() throws Exception {
 		boolean thrown = false;
@@ -174,8 +173,9 @@ public class KitchenSinkTester {
 		assertThat(!thrown).isEqualTo(true);
 		assertThat(result).isEqualTo("Response");
 	}
+*/
 	
-	@Test
+/*	@Test
 	public void testSQLNotFound() throws Exception {
 		boolean thrown = false;
 		try {
@@ -184,6 +184,70 @@ public class KitchenSinkTester {
 			thrown = true;
 		}
 		assertThat(thrown).isEqualTo(true);
+	}*/
+	
+	@Test
+	public void keyword1a() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("What is the function of this app?","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("This is a Chatbot developed by 3111 Travel Agency. We provide services including enquiries answering and tour booking through this Chatbot. If you have further opinions about this Chatbot, please contact us by sending email to comp3111gp22@gmail.com. Thank you.");
+	}
+
+	@Test
+	public void keyword1b() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("I want to know the function of this app.","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("This is a Chatbot developed by 3111 Travel Agency. We provide services including enquiries answering and tour booking through this Chatbot. If you have further opinions about this Chatbot, please contact us by sending email to comp3111gp22@gmail.com. Thank you.");
 	}
 	
+	@Test
+	public void keyword1c() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("What is your function?","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("This is a Chatbot developed by 3111 Travel Agency. We provide services including enquiries answering and tour booking through this Chatbot. If you have further opinions about this Chatbot, please contact us by sending email to comp3111gp22@gmail.com. Thank you.");
+	}
+	
+	@Test
+	public void keyword1d() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("function?","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("I am not sure about what you mean, but I will forward your question to our agency.");
+	}
+	
+	@Test
+	public void keywordFailure() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("dsfl,a","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("I am not sure about what you mean, but I will forward your question to our agency.");
+	}
 }
