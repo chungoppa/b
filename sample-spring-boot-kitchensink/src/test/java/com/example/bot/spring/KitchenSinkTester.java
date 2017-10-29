@@ -249,7 +249,7 @@ public class KitchenSinkTester {
 		assertThat(thrown).isEqualTo(true);
 	}*/
 	
-	@Test
+/*	@Test
 	public void keyword1() throws Exception {
 		boolean thrown = false;
 		String result = null;
@@ -262,5 +262,4 @@ public class KitchenSinkTester {
 		assertThat(result).isEqualTo("This is a chatbot that provides booking service");
 	}
 
-}
-*/
+}*/
