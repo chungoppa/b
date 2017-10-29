@@ -43,11 +43,71 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import com.example.bot.spring.DatabaseEngine;
+import com.example.bot.spring.User;
+import com.example.bot.spring.KitchenSinkController;
 
-
+//Project code
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = { KitchenSinkTester.class, DialogueFlow.class})
+public class KitchenSinkTester {
+//	@Autowired
+//	private KitchenSinkController ksc;
+	
+	@Test
+	public void testFeatures() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		User user=new User("123");
+		Feature feature=new FeatureDefaultHandler(user);
+		result=feature.call("whatever");
+		assertThat(result).isEqualTo("<default message>");
+	}
+	
+	@Test
+	public void testText() throws Exception {
+		String inputText="Sudo";
+		User user=new User("Koo Tin Lok");
+		String result="nu";
+//		result=ksc.testtexttextHandler(inputText, user);
+//		assertThat(result).isEqualTo("userID: ");
+	}
+	
+	@Test
+	public void testAPI1() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = "Greetings";
+			result = DialogueFlow.api_get_intent("sudo login");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("sudo");
+	}
+
+/*	
+	@Test
+	public void testAPI2() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = "Greetings";
+			result = DialogueFlow.api_get_intent("fuck");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("test.slang");
+	}
+*/	
+}
+	
+	
+
 //LAB2 - code static
 /*
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = { KitchenSinkTester.class, DatabaseEngine.class })
 public class KitchenSinkTester {
 	@Autowired
@@ -92,7 +152,9 @@ public class KitchenSinkTester {
 */
 
 //LAB3 - code -SQL
-@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class })
+/*	
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class})
 public class KitchenSinkTester {
 	@Autowired
 	private SQLDatabaseEngine databaseEngine;
@@ -174,8 +236,9 @@ public class KitchenSinkTester {
 		assertThat(!thrown).isEqualTo(true);
 		assertThat(result).isEqualTo("Response");
 	}
+*/
 	
-	@Test
+/*	@Test
 	public void testSQLNotFound() throws Exception {
 		boolean thrown = false;
 		try {
@@ -198,5 +261,6 @@ public class KitchenSinkTester {
 		assertThat(!thrown).isEqualTo(true);
 		assertThat(result).isEqualTo("This is a chatbot that provides booking service");
 	}
-	
+
 }
+*/
