@@ -54,7 +54,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	
 	
 	private Connection getConnection() throws URISyntaxException, SQLException {
-/*		Connection connection;
+		Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
 		
 		String username;
@@ -75,10 +75,10 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		
 		connection = DriverManager.getConnection(dbUrl, username, password);
 
-		return connection;*/
+		return connection;
 		
 
-		Connection connection;
+		/*Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
 		String username = dbUri.getUserInfo().split(":")[0];
@@ -90,7 +90,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		
 		connection = DriverManager.getConnection(dbUrl, username, password);
 
-		return connection;
+		return connection;*/
 	}
 
 		
