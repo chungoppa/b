@@ -11,10 +11,13 @@ import java.net.URI;
 public class SQLDatabaseEngine extends DatabaseEngine {
 	private static boolean LOCAL=false;
 	
-	@Override
-	String search(String text) throws Exception {
-		//Write your code here
-		/*String result;
+	//@Override
+	String search(String text,String dbName) throws Exception {
+		switch(dbName)
+		{
+		/*case "chatbotDBTable":
+		{*//*
+		String result;
 		Connection connection=getConnection();
 		
 		PreparedStatement stmt=connection.prepareStatement("SELECT response FROM chatbotDBTable "
@@ -34,29 +37,42 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		rs.close();
 		stmt.close();
 		connection.close();
-		return result;*/
+		return result;
+		}*/
 		
-		String[] keywords = text.split(" ");
-		int hit = 0;
-		String resultString = "";
-		Connection connection = getConnection();
-		for(String keyword:keywords)
+		case "faq":
 		{
-			PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
+			String result="";
+			String[] keywords = text.split(" ");
+			Connection connection=getConnection();
+			for(String keyword:keywords)
+			{
+				PreparedStatement stmt=connection.prepareStatement("SELECT * FROM faq "
 				+ "WHERE LOWER(keyword) LIKE LOWER( CONCAT('%',?,'%') )");
-			stmt.setString(1,keyword);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				resultString = rs.getString(2);
+				stmt.setString(1,keyword);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					String[] keySentences = rs.getString(1).split("%");
+					for(String keySentence:keySentences)
+					{
+						WagnerFischer WF = new WagnerFischer(text,keySentence);
+						if(WF.getDistance()<(keySentence.length()/2))
+						{
+							result= rs.getString(2);
+							return result;
+						}
+					}
+				}
+				rs.close();
+				stmt.close();
 			}
-			rs.close();
-			stmt.close();
-			if(!resultString.equals(""))
-			return resultString;	
-		}	
-		connection.close();
-		return "I am not sure about what you mean. Could you please repeat your word again?";
+			connection.close();
+		}
+		}
+		return "I am not sure about what you mean, but I will forward your question to our agency.";
 	}
+	
+	
 	
 	
 	private Connection getConnection() throws URISyntaxException, SQLException {
@@ -83,7 +99,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 
 		return connection;
 		*/
-
+		
 		Connection connection;
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
@@ -97,6 +113,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		connection = DriverManager.getConnection(dbUrl, username, password);
 
 		return connection;
+		
 	}
 
 		

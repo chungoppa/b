@@ -48,11 +48,10 @@ import com.example.bot.spring.KitchenSinkController;
 
 //Project code
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { KitchenSinkTester.class, DialogueFlow.class})
+@SpringBootTest(classes = { KitchenSinkTester.class, DialogueFlow.class,SQLDatabaseEngine.class})
 public class KitchenSinkTester {
 //	@Autowired
 //	private KitchenSinkController ksc;
-	
 	@Test
 	public void testFeatures() throws Exception {
 		boolean thrown = false;
@@ -101,7 +100,7 @@ public class KitchenSinkTester {
 		assertThat(result).isEqualTo("test.slang");
 	}
 */	
-}
+//}
 	
 	
 
@@ -152,14 +151,14 @@ public class KitchenSinkTester {
 */
 
 //LAB3 - code -SQL
-/*	
-@RunWith(SpringRunner.class)
+	
+/*@RunWith(SpringRunner.class)
 @SpringBootTest(classes = { KitchenSinkTester.class, SQLDatabaseEngine.class})
-public class KitchenSinkTester {
+public class KitchenSinkTester {*/
 	@Autowired
 	private SQLDatabaseEngine databaseEngine;
-	
-	/*@Test
+	/*
+	@Test
 	public void testSQLFound1() throws Exception {
 		boolean thrown = false;
 		String result = null;
@@ -249,17 +248,68 @@ public class KitchenSinkTester {
 		assertThat(thrown).isEqualTo(true);
 	}*/
 	
-/*	@Test
-	public void keyword1() throws Exception {
+	@Test
+	public void keyword1a() throws Exception {
 		boolean thrown = false;
 		String result = null;
 		try {
-			result = this.databaseEngine.search("What is the function of this app?");
+			result = this.databaseEngine.search("What is the function of this app?","faq");
 		} catch (Exception e) {
 			thrown = true;
 		}
 		assertThat(!thrown).isEqualTo(true);
-		assertThat(result).isEqualTo("This is a chatbot that provides booking service");
+		assertThat(result).isEqualTo("This is a Chatbot developed by 3111 Travel Agency. We provide services including enquiries answering and tour booking through this Chatbot. If you have further opinions about this Chatbot, please contact us by sending email to comp3111gp22@gmail.com. Thank you.");
 	}
 
-}*/
+	@Test
+	public void keyword1b() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("I want to know the function of this app.","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("This is a Chatbot developed by 3111 Travel Agency. We provide services including enquiries answering and tour booking through this Chatbot. If you have further opinions about this Chatbot, please contact us by sending email to comp3111gp22@gmail.com. Thank you.");
+	}
+	
+	@Test
+	public void keyword1c() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("What is your function?","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("This is a Chatbot developed by 3111 Travel Agency. We provide services including enquiries answering and tour booking through this Chatbot. If you have further opinions about this Chatbot, please contact us by sending email to comp3111gp22@gmail.com. Thank you.");
+	}
+	
+	@Test
+	public void keyword1d() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("function?","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("I am not sure about what you mean, but I will forward your question to our agency.");
+	}
+	
+	@Test
+	public void keywordFailure() throws Exception {
+		boolean thrown = false;
+		String result = null;
+		try {
+			result = this.databaseEngine.search("dsfl,a","faq");
+		} catch (Exception e) {
+			thrown = true;
+		}
+		assertThat(!thrown).isEqualTo(true);
+		assertThat(result).isEqualTo("I am not sure about what you mean, but I will forward your question to our agency.");
+	}
+}
