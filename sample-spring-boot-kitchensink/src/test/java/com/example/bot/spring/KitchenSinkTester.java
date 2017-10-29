@@ -250,8 +250,6 @@ public class KitchenSinkTester {
 		assertThat(!thrown).isEqualTo(true);
 		assertThat(result).isEqualTo("I am not sure about what you mean, but I will forward your question to our agency.");
 	}
-<<<<<<< HEAD
-=======
 	/*
 	@Test
 	public void keyword1() throws Exception {
@@ -266,5 +264,4 @@ public class KitchenSinkTester {
 		assertThat(result).isEqualTo("This is a chatbot that provides booking service");
 	}
 	*/
->>>>>>> 6a887c8105b5ee1d51af2a6b1c8d6a324bc7543c
 }
